@@ -1,6 +1,7 @@
 'use client'
 
-import { ArrowUpRight, ArrowDownRight, Plus, MoreVertical } from 'lucide-react'
+import { ArrowUpRight, ArrowDownRight, Plus, MoreVertical, TrendingUp } from 'lucide-react'
+import { PageHeader, BottomNavigation } from '@/components/PageHeader'
 
 interface Holding {
   symbol: string
@@ -57,131 +58,76 @@ export default function PortfolioPage() {
   const totalProfitPercent = (totalProfit / totalInvested) * 100
 
   return (
-    <main className="min-h-screen bg-background pb-24">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b border-border p-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-bold">Portfolio</h1>
-              <p className="text-sm text-muted-foreground">Your holdings and performance</p>
-            </div>
-            <button className="flex items-center gap-2 px-3 py-2 bg-[#10B981] hover:bg-[#059669] text-white rounded-lg transition-colors">
-              <Plus className="w-5 h-5" />
-              <span className="text-sm font-medium">Add Stock</span>
-            </button>
-          </div>
-        </div>
-      </div>
+    <main className="min-h-screen bg-background pb-28">
+      <PageHeader title="Portfolio" subtitle="Your investment holdings and performance" />
 
       {/* Portfolio Summary */}
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="glass-card p-6">
-            <div className="card-label mb-2">Total Invested</div>
-            <div className="card-value text-3xl">
-              {totalInvested.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
-            </div>
+            <div className="card-label mb-3 uppercase text-xs tracking-widest">Total Invested</div>
+            <div className="card-value">₹{totalInvested.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</div>
           </div>
 
           <div className="glass-card p-6">
-            <div className="card-label mb-2">Current Value</div>
-            <div className="card-value text-3xl">
-              {totalCurrent.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
-            </div>
+            <div className="card-label mb-3 uppercase text-xs tracking-widest">Current Value</div>
+            <div className="card-value">₹{totalCurrent.toLocaleString('en-IN', { maximumFractionDigits: 0 })}</div>
           </div>
 
-          <div className={`glass-card p-6 ${totalProfit >= 0 ? 'border-[#10B981]/30' : 'border-[#EF4444]/30'}`}>
-            <div className="card-label mb-2">Total P&L</div>
-            <div className={`card-value text-3xl ${totalProfit >= 0 ? 'text-[#10B981]' : 'text-[#EF4444]'}`}>
-              {totalProfit >= 0 ? '+' : ''}
-              {totalProfit.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
+          <div className={`glass-card p-6 border-t-2 ${totalProfit >= 0 ? 'border-[#00FF88]/40' : 'border-[#FF3860]/40'}`}>
+            <div className="card-label mb-2 uppercase text-xs tracking-widest">Total Gain/Loss</div>
+            <div className={`card-value ${totalProfit >= 0 ? 'text-[#00FF88]' : 'text-[#FF3860]'}`}>
+              {totalProfit >= 0 ? '+' : ''}₹{Math.abs(totalProfit).toLocaleString('en-IN', { maximumFractionDigits: 0 })}
             </div>
-            <div
-              className={`text-sm font-medium mt-2 ${totalProfit >= 0 ? 'text-[#10B981]' : 'text-[#EF4444]'}`}
-            >
-              ({totalProfitPercent.toFixed(2)}%)
+            <div className={`text-sm font-semibold mt-1 ${totalProfit >= 0 ? 'text-[#00FF88]' : 'text-[#FF3860]'}`}>
+              {totalProfit >= 0 ? '+' : ''}{totalProfitPercent.toFixed(2)}%
             </div>
           </div>
         </div>
 
         {/* Holdings Table */}
-        <div className="glass-card overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-white/10">
-                  <th className="px-6 py-4 text-left text-sm font-semibold">Stock</th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold">Qty</th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold">Avg Cost</th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold">Current</th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold">P&L</th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold">Return %</th>
-                  <th className="px-6 py-4 text-right text-sm font-semibold"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {mockHoldings.map((holding) => (
-                  <tr key={holding.symbol} className="border-t border-white/10 hover:bg-white/5 transition-colors">
-                    <td className="px-6 py-4">
-                      <div>
-                        <div className="font-semibold">{holding.symbol}</div>
-                        <div className="text-xs text-muted-foreground">{holding.name}</div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-right font-medium">{holding.quantity}</td>
-                    <td className="px-6 py-4 text-right">
-                      {holding.avgCost.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      {holding.currentPrice.toLocaleString('en-IN', { maximumFractionDigits: 2 })}
-                    </td>
-                    <td className={`px-6 py-4 text-right font-semibold ${holding.change >= 0 ? 'text-[#10B981]' : 'text-[#EF4444]'}`}>
-                      {holding.change >= 0 ? '+' : ''}
-                      {holding.change.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
-                    </td>
-                    <td className={`px-6 py-4 text-right font-semibold ${holding.changePercent >= 0 ? 'text-[#10B981]' : 'text-[#EF4444]'}`}>
-                      {holding.changePercent >= 0 ? '+' : ''}
-                      {holding.changePercent.toFixed(2)}%
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button className="p-1 hover:bg-white/10 rounded transition-colors">
-                        <MoreVertical className="w-5 h-5" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="glass-card p-6 overflow-x-auto">
+          <div className="flex items-center gap-3 mb-6">
+            <TrendingUp className="w-5 h-5 text-[#00D9FF]" />
+            <h2 className="text-xl font-bold text-[#E8F0F7]">Your Holdings</h2>
           </div>
+          <table className="w-full text-sm">
+            <thead className="border-b border-[#1F2D47]">
+              <tr>
+                <th className="text-left py-4 card-label font-semibold text-xs uppercase tracking-widest">Stock</th>
+                <th className="text-right py-4 card-label font-semibold text-xs uppercase tracking-widest">Qty</th>
+                <th className="text-right py-4 card-label font-semibold text-xs uppercase tracking-widest">Avg Cost</th>
+                <th className="text-right py-4 card-label font-semibold text-xs uppercase tracking-widest">Current</th>
+                <th className="text-right py-4 card-label font-semibold text-xs uppercase tracking-widest">P&L %</th>
+                <th className="text-right py-4 card-label font-semibold text-xs uppercase tracking-widest">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mockHoldings.map((holding) => (
+                <tr key={holding.symbol} className="border-b border-[#1F2D47]/50 hover:bg-[#1A2847]/40 transition-colors duration-300">
+                  <td className="py-4">
+                    <div className="font-semibold text-[#E8F0F7]">{holding.symbol}</div>
+                    <div className="text-xs text-[#8FA3C0]">{holding.name}</div>
+                  </td>
+                  <td className="text-right py-4 font-semibold text-[#E8F0F7]">{holding.quantity}</td>
+                  <td className="text-right py-4 font-semibold text-[#E8F0F7]">₹{holding.avgCost.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</td>
+                  <td className="text-right py-4 font-semibold text-[#E8F0F7]">₹{holding.currentPrice.toLocaleString('en-IN', { maximumFractionDigits: 2 })}</td>
+                  <td className={`text-right py-4 font-semibold ${holding.changePercent >= 0 ? 'text-[#00FF88]' : 'text-[#FF3860]'}`}>
+                    {holding.changePercent >= 0 ? '+' : ''}{holding.changePercent.toFixed(2)}%
+                  </td>
+                  <td className="text-right py-4">
+                    <button className="p-2 hover:bg-[#1A2847]/60 rounded-lg transition-colors border border-[#1F2D47] hover:border-[#00D9FF]/40">
+                      <MoreVertical className="w-4 h-4 text-[#8FA3C0]" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-background/80 backdrop-blur border-t border-border">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-around">
-          <NavItem icon="📊" label="Market" />
-          <NavItem icon="💼" label="Portfolio" active />
-          <NavItem icon="⭐" label="Watchlist" />
-          <NavItem icon="📈" label="Options" />
-          <NavItem icon="🤖" label="AI" />
-          <NavItem icon="📰" label="News" />
-          <NavItem icon="👤" label="Profile" />
-        </div>
-      </nav>
+      <BottomNavigation activeTab="Portfolio" />
     </main>
-  )
-}
-
-function NavItem({ icon, label, active }: { icon: string; label: string; active?: boolean }) {
-  return (
-    <button
-      className={`flex flex-col items-center justify-center h-16 px-3 transition-colors ${
-        active ? 'text-[#10B981]' : 'text-muted-foreground hover:text-foreground'
-      }`}
-    >
-      <span className="text-xl mb-1">{icon}</span>
-      <span className="text-xs font-medium">{label}</span>
-    </button>
   )
 }
