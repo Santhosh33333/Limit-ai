@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowUpRight, ArrowDownRight, RefreshCw, TrendingUp, Clock, Zap, BarChart3 } from 'lucide-react'
+import { ArrowUpRight, ArrowDownRight, RefreshCw, TrendingUp, Clock, Zap, BarChart3, AlertCircle, CheckCircle } from 'lucide-react'
 import { useMarketIndices } from '@/lib/hooks'
 import type { MarketQuote } from '@/lib/market-data'
 
@@ -107,21 +107,38 @@ function SkeletonCard() {
   )
 }
 
+function NotificationBanner() {
+  return (
+    <div className="mb-6 glass-card p-4 border-[#00FF88]/40 flex items-center gap-4">
+      <div className="flex-shrink-0">
+        <CheckCircle className="w-6 h-6 text-[#00FF88]" />
+      </div>
+      <div className="flex-1">
+        <p className="text-sm font-semibold text-[#E8F0F7]">Market data updated</p>
+        <p className="text-xs text-[#8FA3C0]">Live prices refreshed just now</p>
+      </div>
+      <button className="text-xs text-[#8FA3C0] hover:text-[#00D9FF] transition-colors">Dismiss</button>
+    </div>
+  )
+}
+
 function SponsorBanner() {
   return (
     <div className="sponsor-card mb-6 border-0">
       <div className="sponsor-content">
-        <div className="flex items-center gap-4">
-          <div className="flex-shrink-0">
-            <div className="w-12 h-12 bg-gradient-to-br from-[#00D9FF] to-[#7B68EE] rounded-lg flex items-center justify-center">
-              <Zap className="w-6 h-6 text-[#0A0E27]" />
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <div className="flex-shrink-0">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#00D9FF] to-[#7B68EE] rounded-lg flex items-center justify-center shadow-lg shadow-[#00D9FF]/20">
+                <Zap className="w-6 h-6 text-[#0A0E27]" />
+              </div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <h3 className="font-bold text-[#00D9FF] text-sm md:text-base truncate">Free Demat Opening</h3>
+              <p className="text-xs text-[#8FA3C0]">Start trading with zero account opening fees - powered by Zerodha</p>
             </div>
           </div>
-          <div className="flex-1">
-            <h3 className="font-bold text-[#00D9FF] text-sm md:text-base">Free Demat Opening</h3>
-            <p className="text-xs text-[#8FA3C0]">Start trading with zero account opening fees - powered by Zerodha</p>
-          </div>
-          <button className="px-4 py-2 bg-gradient-to-r from-[#00D9FF] to-[#00D9FF] text-[#0A0E27] rounded-lg font-semibold text-sm hover:shadow-lg hover:shadow-[#00D9FF]/50 transition-all duration-300 whitespace-nowrap">
+          <button className="px-4 py-2 bg-gradient-to-r from-[#00D9FF] to-[#00D9FF] text-[#0A0E27] rounded-lg font-semibold text-sm hover:shadow-lg hover:shadow-[#00D9FF]/50 transition-all duration-300 whitespace-nowrap flex-shrink-0">
             Open Account
           </button>
         </div>
@@ -160,8 +177,12 @@ export default function Dashboard() {
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Real-time Notification */}
+        {!loading && <NotificationBanner />}
+
         {error && (
-          <div className="glass-card p-4 mb-6 border-[#FF3860]/40 bg-[#FF3860]/10">
+          <div className="glass-card p-4 mb-6 border-[#FF3860]/40 bg-[#FF3860]/10 flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 text-[#FF3860] flex-shrink-0" />
             <p className="text-sm font-medium text-[#FF3860]">Error: {error}</p>
           </div>
         )}

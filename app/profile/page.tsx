@@ -1,35 +1,41 @@
 'use client'
 
 import React, { useState } from 'react'
-import { User, Settings, Bell, Lock, LogOut, ChevronRight } from 'lucide-react'
+import { User, Settings, Bell, Lock, LogOut, ChevronRight, Zap } from 'lucide-react'
 
 export default function ProfilePage() {
+  const [userName] = useState('Trader')
+  const [email] = useState('user@laxhanai.com')
+  
   return (
-    <main className="min-h-screen bg-background pb-24">
-      {/* Header */}
-      <div className="sticky top-0 z-40 bg-background/80 backdrop-blur border-b border-border p-4">
+    <main className="min-h-screen bg-background pb-28">
+      {/* Premium Header */}
+      <div className="sticky top-0 z-40 premium-header p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-2xl md:text-3xl font-bold">Profile</h1>
-          <p className="text-sm text-muted-foreground">Account settings and preferences</p>
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#E8F0F7] to-[#00D9FF] bg-clip-text text-transparent">Profile</h1>
+          <p className="text-sm text-[#8FA3C0] mt-1 font-medium">Account settings and preferences</p>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-2xl mx-auto px-4 py-6">
+      <div className="max-w-2xl mx-auto px-4 py-8">
         {/* User Info Card */}
-        <div className="glass-card p-6 mb-6">
+        <div className="glass-card p-6 mb-6 border-t border-[#00D9FF]/40">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-[#10B981] to-[#059669] rounded-full flex items-center justify-center">
-              <User className="w-8 h-8 text-white" />
+            <div className="w-16 h-16 bg-gradient-to-br from-[#00D9FF] to-[#7B68EE] rounded-full flex items-center justify-center shadow-lg shadow-[#00D9FF]/30">
+              <User className="w-8 h-8 text-[#0A0E27]" />
             </div>
             <div>
-              <h2 className="text-2xl font-bold">John Investor</h2>
-              <p className="text-sm text-muted-foreground">john.investor@email.com</p>
-              <p className="text-xs text-[#10B981] mt-1 font-medium">Member since Jan 2023</p>
+              <h2 className="text-2xl font-bold text-[#E8F0F7]">{userName}</h2>
+              <p className="text-sm text-[#8FA3C0]">{email}</p>
+              <p className="text-xs text-[#00D9FF] mt-1 font-medium flex items-center gap-1">
+                <Zap className="w-3 h-3" />
+                Premium Member
+              </p>
             </div>
           </div>
 
-          <button className="w-full px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 rounded-lg transition-colors font-medium text-sm">
+          <button className="w-full px-4 py-2 bg-gradient-to-r from-[#00D9FF]/20 to-[#7B68EE]/20 hover:from-[#00D9FF]/30 hover:to-[#7B68EE]/30 border border-[#00D9FF]/40 rounded-lg transition-all duration-300 font-medium text-sm text-[#00D9FF]">
             Edit Profile
           </button>
         </div>
@@ -37,14 +43,14 @@ export default function ProfilePage() {
         {/* Settings Sections */}
         <div className="space-y-4">
           {/* Notifications */}
-          <div className="glass-card overflow-hidden">
-            <div className="p-6 border-b border-white/10">
-              <h3 className="font-semibold flex items-center gap-2">
-                <Bell className="w-5 h-5 text-[#10B981]" />
+          <div className="glass-card overflow-hidden border-[#1F2D47]">
+            <div className="p-6 border-b border-[#1F2D47]">
+              <h3 className="font-semibold flex items-center gap-2 text-[#E8F0F7]">
+                <Bell className="w-5 h-5 text-[#00D9FF]" />
                 Notifications
               </h3>
             </div>
-            <div className="divide-y divide-white/10">
+            <div className="divide-y divide-[#1F2D47]">
               <SettingsToggle label="Price Alerts" description="Get notified when stocks reach target prices" />
               <SettingsToggle label="News Alerts" description="Receive financial news and market updates" />
               <SettingsToggle label="Earnings Alerts" description="Notifications for earnings releases" />
@@ -53,14 +59,14 @@ export default function ProfilePage() {
           </div>
 
           {/* Security */}
-          <div className="glass-card overflow-hidden">
-            <div className="p-6 border-b border-white/10">
-              <h3 className="font-semibold flex items-center gap-2">
-                <Lock className="w-5 h-5 text-[#10B981]" />
+          <div className="glass-card overflow-hidden border-[#1F2D47]">
+            <div className="p-6 border-b border-[#1F2D47]">
+              <h3 className="font-semibold flex items-center gap-2 text-[#E8F0F7]">
+                <Lock className="w-5 h-5 text-[#00D9FF]" />
                 Security
               </h3>
             </div>
-            <div className="divide-y divide-white/10">
+            <div className="divide-y divide-[#1F2D47]">
               <SettingsItem label="Change Password" description="Update your account password" />
               <SettingsItem label="Two-Factor Authentication" description="Enable 2FA for added security" />
               <SettingsItem label="Login History" description="View recent login activity" />
@@ -68,14 +74,14 @@ export default function ProfilePage() {
           </div>
 
           {/* Preferences */}
-          <div className="glass-card overflow-hidden">
-            <div className="p-6 border-b border-white/10">
-              <h3 className="font-semibold flex items-center gap-2">
-                <Settings className="w-5 h-5 text-[#10B981]" />
+          <div className="glass-card overflow-hidden border-[#1F2D47]">
+            <div className="p-6 border-b border-[#1F2D47]">
+              <h3 className="font-semibold flex items-center gap-2 text-[#E8F0F7]">
+                <Settings className="w-5 h-5 text-[#00D9FF]" />
                 Preferences
               </h3>
             </div>
-            <div className="divide-y divide-white/10">
+            <div className="divide-y divide-[#1F2D47]">
               <SettingsSelect label="Theme" options={['Dark', 'Light', 'System']} />
               <SettingsSelect label="Currency" options={['INR', 'USD', 'EUR']} />
               <SettingsSelect label="Time Format" options={['24 Hour', '12 Hour']} />
